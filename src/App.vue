@@ -47,7 +47,7 @@ html,body{
 }
 
 body {
-  background-color: rgb(121, 187, 255);
+  background-color: rgb(185, 205, 185);
 
   margin: 0;
   padding: 0;

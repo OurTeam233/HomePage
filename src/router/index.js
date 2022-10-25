@@ -32,7 +32,7 @@ const routes = [{
         name: 'Login',
         component: () => import('../views/Login.vue'),
         meta: {
-            title: '登录' + title
+            title: '登录'
         }
     },
     {
