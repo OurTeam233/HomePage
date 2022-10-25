@@ -8,38 +8,12 @@
 import Login from './views/Login.vue';
 import Ordering from "./Layout/Ordering";
 
-import NewOrders from "./components/AllOrder/NewOrders";
-import IllegalOrders from "./components/AllOrder/IllegalOrders";
-import GetOrders from "./components/AllOrder/GetOrders";
-import CompleteOrders from "./components/AllOrder/CompleteOrders";
-import Meat from "./components/AllMenu/Meat";
-import MeatVegetables from "./components/AllMenu/MeatVegetables";
-import EnDayStat from "./components/Statistics/EnDayStat";
-import WeekStat from "./components/Statistics/WeekStat";
-import Test from "./components/Statistics/Test";
-import OverallStatistics from "./components/Statistics/OverallStatistics";
-import Info from "./components/Information/Info";
-import EditMenu from "./components/AllMenu/EditMenu";
-import Menu from "./components/AllMenu/Menu";
-
 export default {
   name: 'app',
   components: {
     Login,
-    Ordering,
-    NewOrders,
-    IllegalOrders,
-    CompleteOrders,
-    GetOrders,
-    Meat,
-    MeatVegetables,
-    EnDayStat,
-    WeekStat,
-    Test,
-    OverallStatistics,
-    Info,
-    EditMenu,
-    Menu,
+    Ordering
+    
   },
   mounted() {
     window.addEventListener('unload', this.saveState());

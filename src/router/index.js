@@ -50,19 +50,10 @@ const routes = [{
         path: '/ordering',
         name: 'Ordering',
         component: () => import('../Layout/Ordering.vue'),
-        children: [
-            // 订餐
-            {
-                path: 'newOrders',
-                name: 'NewOrders',
-                component: () => import('../components/AllOrder/NewOrders.vue'),
-                meta: {
-                    title: '新增订单' + title
-                }
-            }
-            
-        ]
-    },
+        meta: {
+            title: '首页'
+        }
+    }
 ]
 
 /* 解决重复点击相同路由的报错问题 */
