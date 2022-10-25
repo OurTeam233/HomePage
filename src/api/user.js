@@ -7,7 +7,9 @@ import axios from '../utils/request'
 // 用户登录
 // export const login = (username, password, userType) => http.post('http://175.178.216.63:8888/CanteenWeb/Login', {username, password, userType})
 // export const login = (username, password, userType) => api.postListAPI(username, password, userType)
-export const login = (username, password) => axios.post('/home/user/login', {username, password})
+
+// 0是登录  1是注册  2是修改密码  
+export const login = (username, oldpassword, newpassword, type) => axios.post('/home/user/login', {username, oldpassword, newpassword, type})
 
 
 
