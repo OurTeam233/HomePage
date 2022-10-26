@@ -48,6 +48,7 @@ html,body{
 
 body {
   background-color: rgb(185, 205, 185);
+  background-image: url(../public/img/background.png);
 
   margin: 0;
   padding: 0;

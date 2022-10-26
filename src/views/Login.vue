@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <el-form ref="form" :model="form" :rules="rules" class="login-box">
-      <h2>欢迎登录学生系统</h2>
+      <h2>{{title}}</h2>
       <el-form-item label="账号" prop="username">
         <el-input
           type="text"
@@ -9,7 +9,7 @@
           v-model="form.username"
         ></el-input>
       </el-form-item>
-      <el-form-item label="密码" prop="password">
+      <el-form-item label="密码" prop="password" v-if="type == 0">
         <el-input
           type="password"
           placeholder="请输入密码"
@@ -17,7 +17,44 @@
           show-password
         ></el-input>
       </el-form-item>
-      <el-button type="text">注册</el-button>
+
+      <el-form-item label="请输入密码" prop="password" v-if="type == 1">
+        <el-input
+          type="password"
+          placeholder="请输入密码"
+          v-model="form.password"
+          show-password
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="请确认密码" prop="againpassword" v-if="type == 1">
+        <el-input
+          type="password"
+          placeholder="请输入密码"
+          v-model="form.newpassword"
+          show-password
+        ></el-input>
+      </el-form-item>
+
+      <el-form-item label="请输入原始密码" prop="password" v-if="type == 2">
+        <el-input
+          type="password"
+          placeholder="请输入密码"
+          v-model="form.password"
+          show-password
+        ></el-input>
+      </el-form-item>
+      <el-form-item label="请输入新的密码" prop="newpassword" v-if="type == 2">
+        <el-input
+          type="password"
+          placeholder="请输入密码"
+          v-model="form.newpassword"
+          show-password
+        ></el-input>
+      </el-form-item>
+
+      <el-button type="text" @click="changeToOne">注册</el-button>
+      <el-button type="text" @click="changeToTwo">修改密码</el-button>
+      <el-button type="text" @click="changeToZero">已有账号</el-button>
       <el-button type="primary" @click="submitForm('form')">登录</el-button>
     </el-form>
   </div>
@@ -33,14 +70,45 @@ import { login } from "../api/user.js";
 export default {
   name: "Login",
   data() {
+    // 验证密码是否一致
+    const vaildatePass1 = (rule, value, callback) => {
+      if(this.form.newpassword != this.form.password){
+        // let it = this.form.password
+        // let i = this.form.newpassword
+        // console.log(it)
+        // console.log(i)
+        callback(new Error('两次输入的密码不一致'))
+      } 
+      else if(this.form.newpassword == ""){
+        callback(new Error('请输入密码'));
+      } else {
+        callback()
+      }
+    }
+    //验证修改密码
+    const vaildatePass2 = (rule, value, callback) => {
+      if(this.form.newpassword == this.form.password){
+        // let it = this.form.password
+        // let i = this.form.newpassword
+        // console.log(it)
+        // console.log(i)
+        callback(new Error('请输入新的密码'))
+      } 
+      else if(this.form.newpassword == ""){
+        callback(new Error('请输入密码'));
+      } else {
+        callback()
+      }
+    }
     return {
       loading: false,
       form: {
         username: "",
-        oldpassword: "",
+        password: "",
         newpassword: "",
       },
       type: 0,
+      title: "欢迎登录学生系统",
       rules: {
         username: [
           {
@@ -56,24 +124,71 @@ export default {
             trigger: "blur",
           },
         ],
+        againpassword: [
+          {
+            required: true,
+            validator: vaildatePass1,
+            // message: "请输入密码",
+            trigger: "blur",
+          }
+        ],
+        newpassword: [
+          {
+            required: true,
+            validator: vaildatePass2,
+            // message: "请输入密码",
+            trigger: "blur",
+          }
+        ]
         
       },
     };
   },
   methods: {
+    //将类型修改成注册
+    changeToOne(){
+      this.type = 1;
+      this.title = "注册";
+      this.form.username = "";
+      this.form.password = "";
+      this.form.newpassword = "";
+    },
+
+    //将类型修改成修改密码
+    changeToTwo(){
+      this.type = 2;
+      this.title = "修改密码";
+      this.form.username = "";
+      this.form.password = "";
+      this.form.newpassword = "";
+    },
+
+    //将类型修改成登录
+    changeToZero(){
+      this.type = 0;
+      this.title = "欢迎登录学生系统";
+      this.form.username = "";
+      this.form.password = "";
+      this.form.newpassword = "";
+    },
+
+    
+
     // 提交登录信息
     submitForm(formName) {
+      
       // 通过vuex提交登录的用户名
       // this.$store.commit('setUserName', this.form.username);
       this.$refs[formName].validate((valid) => {
         if (valid) {
+          console.log("通过了")
           this.loading = true;
           // 调用登录接口
           login(
             this.form.username,
-            this.form.oldpassword,
+            this.form.password,
             this.form.newpassword,
-            type
+            this.type
           ).then((res) => {
             // 商家登录成功
             if (res.data.success) {
@@ -103,6 +218,7 @@ export default {
 
               
             } else {
+              
               this.$message({
                 showClose: true,
                 message: "用户名或密码错误!",
@@ -116,6 +232,12 @@ export default {
           // 保存用户名
           // sessionStorage.setItem('userName', this.$store.state.userInfo.userName);
         } else {
+          // console.log("没通过")
+          this.$message({
+                showClose: true,
+                message: "用户名或密码错误!",
+                type: "error",
+              });
           return false;
         }
       });

@@ -9,7 +9,7 @@ import axios from '../utils/request'
 // export const login = (username, password, userType) => api.postListAPI(username, password, userType)
 
 // 0是登录  1是注册  2是修改密码  
-export const login = (username, oldpassword, newpassword, type) => axios.post('/home/user/login', {username, oldpassword, newpassword, type})
+export const login = (username, password, newpassword, type) => axios.post('/home/user/opt', {username, password, newpassword, type})
 
 
 
